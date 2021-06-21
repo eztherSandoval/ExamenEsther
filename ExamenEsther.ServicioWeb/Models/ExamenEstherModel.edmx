@@ -1,0 +1,432 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ExamenEstherModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Clientes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RazonSocial" Type="varchar(max)" Nullable="false" />
+          <Property Name="Pais" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="IdentificadorFiscal" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="CorreoElectronico" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Mercado" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Contactos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Puesto" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Correo" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="IdCliente" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Direcciones">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Calle" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="NumeroExterior" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NumeroInterior" Type="varchar" MaxLength="50" />
+          <Property Name="CodigoPostal" Type="bigint" Nullable="false" />
+          <Property Name="Ciudad" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="IdCliente" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Mercados">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Telefonos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Telefono" Type="varchar" MaxLength="50" />
+          <Property Name="IdContacto" Type="bigint" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Cliente_Mercado">
+          <End Role="Mercados" Type="Self.Mercados" Multiplicity="1" />
+          <End Role="Clientes" Type="Self.Clientes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mercados">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Clientes">
+              <PropertyRef Name="Mercado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contacto_Cliente">
+          <End Role="Clientes" Type="Self.Clientes" Multiplicity="1" />
+          <End Role="Contactos" Type="Self.Contactos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contactos">
+              <PropertyRef Name="IdCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Direccion_Cliente">
+          <End Role="Clientes" Type="Self.Clientes" Multiplicity="1" />
+          <End Role="Direcciones" Type="Self.Direcciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Direcciones">
+              <PropertyRef Name="IdCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Telefonos_Contacto">
+          <End Role="Contactos" Type="Self.Contactos" Multiplicity="1" />
+          <End Role="Telefonos" Type="Self.Telefonos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contactos">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Telefonos">
+              <PropertyRef Name="IdContacto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="spClienteModificar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pId" Type="bigint" Mode="In" />
+          <Parameter Name="pRazonSocial" Type="varchar(max)" Mode="In" />
+          <Parameter Name="pPais" Type="varchar" Mode="In" />
+          <Parameter Name="pIdentificadorFiscal" Type="varchar" Mode="In" />
+          <Parameter Name="pCorreoElectronico" Type="varchar" Mode="In" />
+          <Parameter Name="pIdMercado" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="spClienteResgistrar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pRazonSocial" Type="varchar(max)" Mode="In" />
+          <Parameter Name="pPais" Type="varchar" Mode="In" />
+          <Parameter Name="pIdentificadorFiscal" Type="varchar" Mode="In" />
+          <Parameter Name="pCorreoElectronico" Type="varchar" Mode="In" />
+          <Parameter Name="pIdMercado" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="spClientesConsultar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pRazonSocial" Type="varchar(max)" Mode="In" />
+          <Parameter Name="pPais" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spContactoModificar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pId" Type="bigint" Mode="In" />
+          <Parameter Name="pNombre" Type="varchar" Mode="In" />
+          <Parameter Name="pPuesto" Type="varchar" Mode="In" />
+          <Parameter Name="pCorreo" Type="varchar" Mode="In" />
+          <Parameter Name="pIdCliente" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="spContactoRegistrar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pNombre" Type="varchar" Mode="In" />
+          <Parameter Name="pPuesto" Type="varchar" Mode="In" />
+          <Parameter Name="pCorreo" Type="varchar" Mode="In" />
+          <Parameter Name="pIdCliente" Type="bigint" Mode="In" />
+        </Function>
+        <EntityContainer Name="ExamenEstherModelStoreContainer">
+          <EntitySet Name="Clientes" EntityType="Self.Clientes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Contactos" EntityType="Self.Contactos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Direcciones" EntityType="Self.Direcciones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Mercados" EntityType="Self.Mercados" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Telefonos" EntityType="Self.Telefonos" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Cliente_Mercado" Association="Self.FK_Cliente_Mercado">
+            <End Role="Mercados" EntitySet="Mercados" />
+            <End Role="Clientes" EntitySet="Clientes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contacto_Cliente" Association="Self.FK_Contacto_Cliente">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Contactos" EntitySet="Contactos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Direccion_Cliente" Association="Self.FK_Direccion_Cliente">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Direcciones" EntitySet="Direcciones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Telefonos_Contacto" Association="Self.FK_Telefonos_Contacto">
+            <End Role="Contactos" EntitySet="Contactos" />
+            <End Role="Telefonos" EntitySet="Telefonos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ExamenEstherModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Clientes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RazonSocial" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Pais" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdentificadorFiscal" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CorreoElectronico" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Mercado" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Mercados" Relationship="Self.FK_Cliente_Mercado" FromRole="Clientes" ToRole="Mercados" />
+          <NavigationProperty Name="Contactos" Relationship="Self.FK_Contacto_Cliente" FromRole="Clientes" ToRole="Contactos" />
+          <NavigationProperty Name="Direcciones" Relationship="Self.FK_Direccion_Cliente" FromRole="Clientes" ToRole="Direcciones" />
+        </EntityType>
+        <EntityType Name="Contactos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Puesto" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Correo" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdCliente" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Clientes" Relationship="Self.FK_Contacto_Cliente" FromRole="Contactos" ToRole="Clientes" />
+          <NavigationProperty Name="Telefonos" Relationship="Self.FK_Telefonos_Contacto" FromRole="Contactos" ToRole="Telefonos" />
+        </EntityType>
+        <EntityType Name="Direcciones">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Calle" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NumeroExterior" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NumeroInterior" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CodigoPostal" Type="Int64" Nullable="false" />
+          <Property Name="Ciudad" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdCliente" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Clientes" Relationship="Self.FK_Direccion_Cliente" FromRole="Direcciones" ToRole="Clientes" />
+        </EntityType>
+        <EntityType Name="Mercados">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Clientes" Relationship="Self.FK_Cliente_Mercado" FromRole="Mercados" ToRole="Clientes" />
+        </EntityType>
+        <EntityType Name="Telefonos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IdContacto" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Contactos" Relationship="Self.FK_Telefonos_Contacto" FromRole="Telefonos" ToRole="Contactos" />
+        </EntityType>
+        <Association Name="FK_Cliente_Mercado">
+          <End Role="Mercados" Type="Self.Mercados" Multiplicity="1" />
+          <End Role="Clientes" Type="Self.Clientes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mercados">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Clientes">
+              <PropertyRef Name="Mercado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contacto_Cliente">
+          <End Role="Clientes" Type="Self.Clientes" Multiplicity="1" />
+          <End Role="Contactos" Type="Self.Contactos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contactos">
+              <PropertyRef Name="IdCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Direccion_Cliente">
+          <End Role="Clientes" Type="Self.Clientes" Multiplicity="1" />
+          <End Role="Direcciones" Type="Self.Direcciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Direcciones">
+              <PropertyRef Name="IdCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Telefonos_Contacto">
+          <End Role="Contactos" Type="Self.Contactos" Multiplicity="1" />
+          <End Role="Telefonos" Type="Self.Telefonos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contactos">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Telefonos">
+              <PropertyRef Name="IdContacto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ExamenEstherEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clientes" EntityType="Self.Clientes" />
+          <EntitySet Name="Contactos" EntityType="Self.Contactos" />
+          <EntitySet Name="Direcciones" EntityType="Self.Direcciones" />
+          <EntitySet Name="Mercados" EntityType="Self.Mercados" />
+          <EntitySet Name="Telefonos" EntityType="Self.Telefonos" />
+          <AssociationSet Name="FK_Cliente_Mercado" Association="Self.FK_Cliente_Mercado">
+            <End Role="Mercados" EntitySet="Mercados" />
+            <End Role="Clientes" EntitySet="Clientes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contacto_Cliente" Association="Self.FK_Contacto_Cliente">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Contactos" EntitySet="Contactos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Direccion_Cliente" Association="Self.FK_Direccion_Cliente">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Direcciones" EntitySet="Direcciones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Telefonos_Contacto" Association="Self.FK_Telefonos_Contacto">
+            <End Role="Contactos" EntitySet="Contactos" />
+            <End Role="Telefonos" EntitySet="Telefonos" />
+          </AssociationSet>
+          <FunctionImport Name="spClienteModificar">
+            <Parameter Name="pId" Mode="In" Type="Int64" />
+            <Parameter Name="pRazonSocial" Mode="In" Type="String" />
+            <Parameter Name="pPais" Mode="In" Type="String" />
+            <Parameter Name="pIdentificadorFiscal" Mode="In" Type="String" />
+            <Parameter Name="pCorreoElectronico" Mode="In" Type="String" />
+            <Parameter Name="pIdMercado" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spClienteResgistrar">
+            <Parameter Name="pRazonSocial" Mode="In" Type="String" />
+            <Parameter Name="pPais" Mode="In" Type="String" />
+            <Parameter Name="pIdentificadorFiscal" Mode="In" Type="String" />
+            <Parameter Name="pCorreoElectronico" Mode="In" Type="String" />
+            <Parameter Name="pIdMercado" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spClientesConsultar" ReturnType="Collection(ExamenEstherModel.spClientesConsultar_Result)">
+            <Parameter Name="pRazonSocial" Mode="In" Type="String" />
+            <Parameter Name="pPais" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spContactoModificar">
+            <Parameter Name="pId" Mode="In" Type="Int64" />
+            <Parameter Name="pNombre" Mode="In" Type="String" />
+            <Parameter Name="pPuesto" Mode="In" Type="String" />
+            <Parameter Name="pCorreo" Mode="In" Type="String" />
+            <Parameter Name="pIdCliente" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spContactoRegistrar">
+            <Parameter Name="pNombre" Mode="In" Type="String" />
+            <Parameter Name="pPuesto" Mode="In" Type="String" />
+            <Parameter Name="pCorreo" Mode="In" Type="String" />
+            <Parameter Name="pIdCliente" Mode="In" Type="Int64" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="spClientesConsultar_Result">
+          <Property Type="Int64" Name="Id" Nullable="false" />
+          <Property Type="String" Name="RazonSocial" Nullable="false" />
+          <Property Type="String" Name="Pais" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="IdentificadorFiscal" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="CorreoElectronico" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="250" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ExamenEstherModelStoreContainer" CdmEntityContainer="ExamenEstherEntities">
+          <EntitySetMapping Name="Clientes">
+            <EntityTypeMapping TypeName="ExamenEstherModel.Clientes">
+              <MappingFragment StoreEntitySet="Clientes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RazonSocial" ColumnName="RazonSocial" />
+                <ScalarProperty Name="Pais" ColumnName="Pais" />
+                <ScalarProperty Name="IdentificadorFiscal" ColumnName="IdentificadorFiscal" />
+                <ScalarProperty Name="CorreoElectronico" ColumnName="CorreoElectronico" />
+                <ScalarProperty Name="Mercado" ColumnName="Mercado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Contactos">
+            <EntityTypeMapping TypeName="ExamenEstherModel.Contactos">
+              <MappingFragment StoreEntitySet="Contactos">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Puesto" ColumnName="Puesto" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="IdCliente" ColumnName="IdCliente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Direcciones">
+            <EntityTypeMapping TypeName="ExamenEstherModel.Direcciones">
+              <MappingFragment StoreEntitySet="Direcciones">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Calle" ColumnName="Calle" />
+                <ScalarProperty Name="NumeroExterior" ColumnName="NumeroExterior" />
+                <ScalarProperty Name="NumeroInterior" ColumnName="NumeroInterior" />
+                <ScalarProperty Name="CodigoPostal" ColumnName="CodigoPostal" />
+                <ScalarProperty Name="Ciudad" ColumnName="Ciudad" />
+                <ScalarProperty Name="IdCliente" ColumnName="IdCliente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Mercados">
+            <EntityTypeMapping TypeName="ExamenEstherModel.Mercados">
+              <MappingFragment StoreEntitySet="Mercados">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Telefonos">
+            <EntityTypeMapping TypeName="ExamenEstherModel.Telefonos">
+              <MappingFragment StoreEntitySet="Telefonos">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="IdContacto" ColumnName="IdContacto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spClienteModificar" FunctionName="ExamenEstherModel.Store.spClienteModificar" />
+          <FunctionImportMapping FunctionImportName="spClienteResgistrar" FunctionName="ExamenEstherModel.Store.spClienteResgistrar" />
+          <FunctionImportMapping FunctionImportName="spClientesConsultar" FunctionName="ExamenEstherModel.Store.spClientesConsultar">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ExamenEstherModel.spClientesConsultar_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RazonSocial" ColumnName="RazonSocial" />
+                <ScalarProperty Name="Pais" ColumnName="Pais" />
+                <ScalarProperty Name="IdentificadorFiscal" ColumnName="IdentificadorFiscal" />
+                <ScalarProperty Name="CorreoElectronico" ColumnName="CorreoElectronico" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spContactoModificar" FunctionName="ExamenEstherModel.Store.spContactoModificar" />
+          <FunctionImportMapping FunctionImportName="spContactoRegistrar" FunctionName="ExamenEstherModel.Store.spContactoRegistrar" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamenEsther.ServicioWeb", "ExamenEsther.ServicioWeb\ExamenEsther.ServicioWeb.csproj", "{5D0CB6DC-AD4E-41FC-AE91-7FC11E218BD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamenEsther.Cliente", "ExamenEsther.Cliente\ExamenEsther.Cliente.csproj", "{6FC96E5B-9AC5-4C2F-A900-1A1DA7DDABD1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5D0CB6DC-AD4E-41FC-AE91-7FC11E218BD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D0CB6DC-AD4E-41FC-AE91-7FC11E218BD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D0CB6DC-AD4E-41FC-AE91-7FC11E218BD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D0CB6DC-AD4E-41FC-AE91-7FC11E218BD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FC96E5B-9AC5-4C2F-A900-1A1DA7DDABD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FC96E5B-9AC5-4C2F-A900-1A1DA7DDABD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FC96E5B-9AC5-4C2F-A900-1A1DA7DDABD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FC96E5B-9AC5-4C2F-A900-1A1DA7DDABD1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {74BDB6A3-3798-4FB9-A589-490B39D6005A}
+	EndGlobalSection
+EndGlobal
